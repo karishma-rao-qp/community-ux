@@ -229,7 +229,6 @@ export default function ProjectsPage() {
             const item = v as StatusOption;
             setStatusFilter(item.value === 'all' ? null : item);
           }}
-          // placeholder="Select Status"
           variant="outlined"
         />
       </div>
@@ -249,7 +248,6 @@ export default function ProjectsPage() {
         }
       />
 
-      {/* Create project modal */}
       <WuModal open={isCreateOpen} onOpenChange={setIsCreateOpen} size="md">
         <WuModalHeader>New Project</WuModalHeader>
         <WuModalContent>
@@ -293,10 +291,11 @@ export default function ProjectsPage() {
         </WuModalFooter>
       </WuModal>
 
-      {/* Archive confirmation */}
       <ConfirmModal
         open={archiveTarget !== null}
-        onOpenChange={(open) => { if (!open) setArchiveTarget(null); }}
+        onOpenChange={(open) => {
+          if (!open) setArchiveTarget(null);
+        }}
         title="Archive project?"
         description={`"${archiveTarget?.name}" will be archived and no longer accept new responses.`}
         confirmLabel="Archive"

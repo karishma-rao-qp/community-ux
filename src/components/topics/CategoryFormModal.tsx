@@ -7,7 +7,6 @@ import type { TopicCategory } from '@/data/mock-topic-categories';
 import {
   CATEGORY_DESCRIPTION_MAX_LENGTH,
   CATEGORY_TITLE_MAX_LENGTH,
-  MOCK_CATEGORY_CRITERIA_OPTIONS,
 } from '@/data/mock-topic-categories';
 import {
   MOCK_COMMUNITY_LANGUAGES,
@@ -64,7 +63,6 @@ const WuSelect = dynamic(
 );
 
 type LanguageOption = { value: string; label: string; isPrimary: boolean };
-type CriteriaOption = { value: string; label: string };
 
 type CategoryFormModalProps = {
   open: boolean;
@@ -74,22 +72,7 @@ type CategoryFormModalProps = {
   onSaved: () => void;
 };
 
-const EMPTY_FORM = { title: '', description: '' };
-
-const CRITERIA_OPTIONS: CriteriaOption[] = MOCK_CATEGORY_CRITERIA_OPTIONS.map((o) => ({
-  value: o.value,
-  label: o.label,
-}));
-
-function findCriteriaOption(criteria: string): CriteriaOption | null {
-  if (!criteria.trim()) return null;
-  return (
-    CRITERIA_OPTIONS.find((o) => o.label === criteria || o.value === criteria) ?? {
-      value: criteria,
-      label: criteria,
-    }
-  );
-}
+const EMPTY_FORM = { title: '', description: '', criteria: '' };
 
 export function CategoryFormModal({
   open,
@@ -101,7 +84,6 @@ export function CategoryFormModal({
   const { showToast } = useWuShowToast();
   const [selectedLanguage, setSelectedLanguage] = useState<LanguageOption | null>(null);
   const [defaultForm, setDefaultForm] = useState(EMPTY_FORM);
-  const [criteria, setCriteria] = useState<CriteriaOption | null>(null);
   const [translationForm, setTranslationForm] = useState({ title: '', description: '' });
   const [translationErrors, setTranslationErrors] = useState<{
     title?: string;
@@ -137,8 +119,8 @@ export function CategoryFormModal({
       setDefaultForm({
         title: category.title,
         description: category.description,
+        criteria: category.criteria,
       });
-      setCriteria(findCriteriaOption(category.criteria));
 
       if (!preferred.isPrimary) {
         const existing = getCategoryTranslations(category.id).find(
@@ -153,7 +135,6 @@ export function CategoryFormModal({
       }
     } else {
       setDefaultForm(EMPTY_FORM);
-      setCriteria(null);
       setTranslationForm({ title: '', description: '' });
     }
 
@@ -193,25 +174,15 @@ export function CategoryFormModal({
       ? translationValid && defaultDescriptionValid
       : defaultTitleValid && defaultDescriptionValid && translationValid;
 
-  function categoryPayload() {
-    return {
-      title: defaultForm.title,
-      description: defaultForm.description,
-      criteria: criteria?.label ?? '',
-    };
-  }
-
   function handleSave() {
     if (!selectedLanguage || !canSave) return;
 
-    const payload = categoryPayload();
-
     if (isPrimarySelected) {
       if (category) {
-        updateTopicCategory(category.id, payload);
+        updateTopicCategory(category.id, defaultForm);
         showToast({ message: 'Category updated', variant: 'success' });
       } else {
-        createTopicCategory(payload);
+        createTopicCategory(defaultForm);
         showToast({ message: 'Category created', variant: 'success' });
       }
     } else if (category) {
@@ -219,7 +190,7 @@ export function CategoryFormModal({
       setTranslationErrors(errors);
       if (hasTranslationFormErrors(errors)) return;
 
-      updateTopicCategory(category.id, payload);
+      updateTopicCategory(category.id, defaultForm);
       upsertCategoryTranslation(
         category.id,
         selectedLanguage.value,
@@ -235,7 +206,7 @@ export function CategoryFormModal({
       setTranslationErrors(errors);
       if (hasTranslationFormErrors(errors) || !defaultTitleValid) return;
 
-      const created = createTopicCategory(payload);
+      const created = createTopicCategory(defaultForm);
       upsertCategoryTranslation(
         created.id,
         selectedLanguage.value,
@@ -291,14 +262,14 @@ export function CategoryFormModal({
                 }
                 maxLength={CATEGORY_DESCRIPTION_MAX_LENGTH}
               />
-              <WuSelect
+              <WuTextarea
                 Label="Criteria"
                 variant="outlined"
                 placeholder="Who can post in this category?"
-                data={CRITERIA_OPTIONS}
-                accessorKey={{ value: 'value', label: 'label' }}
-                value={criteria}
-                onSelect={(v) => setCriteria(v as CriteriaOption)}
+                value={defaultForm.criteria}
+                onChange={(e) =>
+                  setDefaultForm((prev) => ({ ...prev, criteria: e.target.value }))
+                }
               />
             </>
           ) : (
@@ -367,14 +338,14 @@ export function CategoryFormModal({
                 </div>
               </div>
 
-              <WuSelect
+              <WuTextarea
                 Label="Criteria"
                 variant="outlined"
                 placeholder="Who can post in this category?"
-                data={CRITERIA_OPTIONS}
-                accessorKey={{ value: 'value', label: 'label' }}
-                value={criteria}
-                onSelect={(v) => setCriteria(v as CriteriaOption)}
+                value={defaultForm.criteria}
+                onChange={(e) =>
+                  setDefaultForm((prev) => ({ ...prev, criteria: e.target.value }))
+                }
               />
             </>
           )}

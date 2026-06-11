@@ -60,23 +60,6 @@ export const MOCK_TOPIC_FILTERS: TopicFilter[] = [
   { id: 'filter-005', label: 'Researchers only' },
 ];
 
-export const MOCK_CATEGORY_CRITERIA_OPTIONS = [
-  { value: 'all-active', label: 'Open to all active members' },
-  {
-    value: 'survey-completers',
-    label: 'Open to all active members with at least one completed survey',
-  },
-  {
-    value: 'event-attendees',
-    label: 'Members who have attended at least one community event',
-  },
-  {
-    value: 'researcher-badge',
-    label: 'Panel members with Researcher or Expert badge',
-  },
-  { value: 'beta-testers', label: 'Invited beta testers only' },
-] as const;
-
 export const CATEGORY_TITLE_MAX_LENGTH = 200;
 export const CATEGORY_DESCRIPTION_MAX_LENGTH = 1000;
 
