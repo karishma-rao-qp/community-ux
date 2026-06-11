@@ -15,10 +15,20 @@ const WuSidebarItem = dynamic(
 
 const NAV_ITEMS = [
   {
+    label: 'Panel Dashboard',
+    href: '/panel-dashboard',
+    icon: <span className="wm-dashboard" />,
+  },
+  {
+    label: 'Topics',
+    href: '/topics',
+    icon: <span className="wm-forum" />,
+  },
+  {
     label: 'Projects',
     href: '/projects',
     icon: <span className="wm-folder-data" />,
-  }
+  },
 ];
 
 export function SideNav() {
