@@ -15,6 +15,11 @@ const WuSidebarItem = dynamic(
 
 const NAV_ITEMS = [
   {
+    label: 'Community Manager Agent',
+    href: '/community-admin/agent',
+    icon: <span className="wm-auto-awesome" />,
+  },
+  {
     label: 'Projects',
     href: '/projects',
     icon: <span className="wm-folder-data" />,

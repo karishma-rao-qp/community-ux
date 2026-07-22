@@ -1,6 +1,6 @@
-# Community UX
+# QuestionPro-Communities
 
-it is a panel management saas product
+It is an online panel to conduct survey and discussion with its members.
 
 UX prototype built with the QuestionPro UX Prototype Base.
 

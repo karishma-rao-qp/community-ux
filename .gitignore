@@ -36,6 +36,22 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# local credentials and secret-bearing files — never commit
+/passwords/
+/secrets/
+/credentials/
+/passwords.*
+/secrets.*
+/tokens.*
+/api-keys.*
+/api_keys.*
+*.key
+*.p12
+*.pfx
+*.token
+*.secret
+*.credentials
+
 # vercel
 .vercel
 

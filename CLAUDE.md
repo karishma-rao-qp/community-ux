@@ -6,11 +6,11 @@ Do not build backend APIs, database schema, auth, sync engine, or production int
 
 ## Core Concepts
 
-**Product:** Community UX
-**What it does:** it is a panel management saas product
-**Primary users:** Panel managers, reseearcher, brands and consumers
-**Key entities:** survey, discussion, topics,community health
-**Primary actions:** share survey, qual discussion and community discussion.
+**Product:** QuestionPro-Communities
+**What it does:** It is an online panel to conduct survey and discussion with its members.
+**Primary users:** Community admin and community members
+**Key entities:** Survey, response, discussion, topics, polls
+**Primary actions:** send survey, send poll, engagement discussion and engagement topics.
 
 
 ## Workflow
